@@ -2,81 +2,83 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Menú Interactivo</title>
     <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
     <style>
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #fff; }
-        .menu-container { position: relative; width: 100vw; height: 100vh; }
-        .bg-menu { width: 100%; height: 100%; object-fit: contain; }
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #fff; font-family: sans-serif; }
         
-        #btn-invisible {
+        /* Contenedor principal del menú */
+        .menu-wrapper { position: relative; width: 100vw; height: 100vh; display: flex; justify-content: center; }
+        
+        /* Imagen del menú ajustada a la pantalla */
+        .menu-bg { height: 100%; width: auto; max-width: 100%; object-fit: contain; }
+
+        /* Botón Invisible sobre tu diseño 'VER 3D' */
+        #ar-trigger {
             position: absolute;
+            /* Coordenadas precisas basadas en tu imagen */
             top: 28.5%;
-            right: 9%;
-            width: 20%;
-            height: 11%;
-            background: rgba(255, 0, 0, 0);
+            right: 8.5%;
+            width: 21%;
+            height: 11.5%;
+            background: rgba(255, 0, 0, 0); /* Totalmente invisible */
             border: none;
             cursor: pointer;
             z-index: 10;
+            -webkit-tap-highlight-color: transparent; /* Elimina el destello al tocar en iOS */
         }
 
-        #visor-overlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.95);
-            z-index: 100;
-        }
-
-        model-viewer { width: 100%; height: 90%; }
-
-        .btn-ar-real {
+        /* Visor 3D oculto pero activo para carga rápida */
+        model-viewer {
             position: absolute;
-            bottom: 40px;
-            left: 50%;
-            transform: translateX(-50%);
-            padding: 15px 30px;
-            background: #007AFF;
-            color: white;
-            border: none;
-            border-radius: 12px;
-            font-weight: bold;
-            font-size: 18px;
-        }
-
-        .btn-cerrar {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            width: 45px;
-            height: 45px;
-            background: #fff;
-            border: none;
-            border-radius: 50%;
-            font-size: 24px;
-            font-weight: bold;
-            z-index: 101;
+            width: 1px;
+            height: 1px;
+            opacity: 0;
+            pointer-events: none;
         }
     </style>
 </head>
 <body>
 
-    <div class="menu-container">
-        <img src="menu.jpg" class="bg-menu">
-        <button id="btn-invisible" onclick="abrirAR()"></button>
+    <div class="menu-wrapper">
+        <img src="menu.jpg" alt="Menú del Restaurante" class="menu-bg">
+        
+        <button id="ar-trigger" onclick="activarAR()"></button>
     </div>
 
-    <div id="visor-overlay">
-        <button class="btn-cerrar" onclick="cerrarAR()">×</button>
-        <model-viewer src="plato.glb" ios-src="plato.usdz" ar ar-modes="quick-look webxr" camera-controls auto-rotate shadow-intensity="1">
-            <button slot="ar-button" class="btn-ar-real">📸 VER EN REALIDAD AUMENTADA</button>
-        </model-viewer>
-    </div>
+    <model-viewer 
+        id="visor"
+        src="plato.glb" 
+        ios-src="plato.usdz" 
+        ar 
+        ar-modes="quick-look" 
+        quick-look-browsers="safari chrome">
+    </model-viewer>
 
     <script>
-        function abrirAR() { document.getElementById('visor-overlay').style.display = 'block'; }
-        function cerrarAR() { document.getElementById('visor-overlay').style.display = 'none'; }
+        // Función optimizada para activar AR Instantáneamente en iOS
+        function activarAR() {
+            const visor = document.getElementById('visor');
+            // Detectar si es iOS para forzar Quick Look directo
+            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+            
+            if (isIOS) {
+                // En iOS, model-viewer maneja el ios-src automáticamente al activar AR
+                visor.activateAR();
+            } else {
+                // Fallback para Android si fuera necesario, aunque el foco es iOS
+                visor.activateAR();
+            }
+        }
+        
+        // Asegurar que el visor esté cargado
+        document.addEventListener('DOMContentLoaded', () => {
+            const visor = document.getElementById('visor');
+            visor.addEventListener('load', () => {
+                console.log('Modelo 3D cargado y listo');
+            });
+        });
     </script>
 
 </body>
