@@ -1,37 +1,28 @@
 <!DOCTYPE html>
-<html lang="es">
+<html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Menú Interactivo</title>
     <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
-    <style>
-        body { margin: 0; padding: 0; background-color: #ffffff; }
-        .contenedor { position: relative; width: 100%; max-width: 500px; margin: 0 auto; }
-        .imagen-fondo { width: 100%; display: block; }
-        .boton-magico {
-            position: absolute;
-            top: 75px; 
-            right: 25px; 
-            width: 85px; 
-            height: 85px; 
-            background-color: rgba(255, 0, 0, 0.4); 
-            border: none;
-            cursor: pointer;
-            z-index: 10;
-            border-radius: 15px;
-        }
-        model-viewer { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
-    </style>
 </head>
-<body>
-    <div class="contenedor">
-        <img src="menu.jpg" class="imagen-fondo">
-        <button class="boton-magico" onclick="abrirAR()"></button>
-    </div>
-    <model-viewer id="visor" src="plato.glb" ios-src="plato.usdz" ar ar-modes="webxr scene-viewer quick-look"></model-viewer>
-    <script>
-        function abrirAR() { document.querySelector('#visor').activateAR(); }
-    </script>
+<body style="margin: 0; background-color: #ffffff; display: flex; flex-direction: column; align-items: center;">
+
+    <h2 style="font-family: sans-serif; margin-top: 20px;">🥩 Mi Menú 3D</h2>
+
+    <model-viewer 
+        src="plato.glb" 
+        ios-src="plato.usdz" 
+        ar 
+        ar-modes="quick-look webxr" 
+        camera-controls 
+        auto-rotate 
+        style="width: 100vw; height: 80vh;">
+        
+        <button slot="ar-button" style="background-color: #007AFF; color: white; border: none; padding: 15px 25px; border-radius: 50px; font-size: 18px; font-weight: bold; position: absolute; bottom: 50px; left: 50%; transform: translateX(-50%); box-shadow: 0 4px 10px rgba(0,0,0,0.3);">
+            📸 VER EN MI MESA
+        </button>
+        
+    </model-viewer>
+
 </body>
 </html>
