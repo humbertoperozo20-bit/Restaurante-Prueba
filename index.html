@@ -3,46 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Menú Interactivo</title>
+    <title>Menú AR</title>
     <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
     <style>
         body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #ffffff; }
         .wrapper { position: relative; width: 100vw; height: 100vh; display: flex; justify-content: center; align-items: center; }
         .foto-menu { height: 100%; width: auto; max-width: 100%; object-fit: contain; }
-        
-        /* ÁREA DE CLIC (BOTÓN INVISIBLE) */
         #boton-ar {
             position: absolute; 
-            top: 25%;    /* Ajusta si el plato está más arriba o abajo */
-            left: 30%;   /* Ajusta si el plato está más a la izquierda o derecha */
-            width: 40%;  /* Ancho del área táctil */
-            height: 25%; /* Alto del área táctil */
+            top: 28.2%;
+            right: 8.8%;
+            width: 21%;
+            height: 11.5%;
             background: transparent;
             border: none;
             cursor: pointer;
             z-index: 10;
             -webkit-tap-highlight-color: transparent;
         }
-
         model-viewer { display: none; }
     </style>
 </head>
 <body>
-
     <div class="wrapper">
         <img src="menu.jpg" class="foto-menu">
-        
         <button id="boton-ar" onclick="document.getElementById('visor').activateAR()"></button>
     </div>
-
     <model-viewer 
         id="visor" 
         src="kiwi.glb" 
         ios-src="kiwi.usdz" 
         ar 
-        ar-modes="quick-look scene-viewer" 
-        camera-controls>
+        ar-modes="quick-look scene-viewer">
     </model-viewer>
-
 </body>
 </html>
