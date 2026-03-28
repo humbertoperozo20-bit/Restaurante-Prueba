@@ -3,83 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Menú Interactivo</title>
+    <title>Menú 3D Pro</title>
     <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
     <style>
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #fff; font-family: sans-serif; }
-        
-        /* Contenedor principal del menú */
-        .menu-wrapper { position: relative; width: 100vw; height: 100vh; display: flex; justify-content: center; }
-        
-        /* Imagen del menú ajustada a la pantalla */
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #fff; }
+        .wrapper { position: relative; width: 100vw; height: 100vh; display: flex; justify-content: center; }
         .menu-bg { height: 100%; width: auto; max-width: 100%; object-fit: contain; }
-
-        /* Botón Invisible sobre tu diseño 'VER 3D' */
-        #ar-trigger {
+        #btn-invisible {
             position: absolute;
-            /* Coordenadas precisas basadas en tu imagen */
             top: 28.5%;
             right: 8.5%;
             width: 21%;
             height: 11.5%;
-            background: rgba(255, 0, 0, 0); /* Totalmente invisible */
+            background: rgba(0, 0, 0, 0);
             border: none;
             cursor: pointer;
             z-index: 10;
-            -webkit-tap-highlight-color: transparent; /* Elimina el destello al tocar en iOS */
+            -webkit-tap-highlight-color: transparent;
         }
-
-        /* Visor 3D oculto pero activo para carga rápida */
-        model-viewer {
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            opacity: 0;
-            pointer-events: none;
-        }
+        model-viewer { display: none; }
     </style>
 </head>
 <body>
-
-    <div class="menu-wrapper">
-        <img src="menu.jpg" alt="Menú del Restaurante" class="menu-bg">
-        
-        <button id="ar-trigger" onclick="activarAR()"></button>
+    <div class="wrapper">
+        <img src="menu.jpg" class="menu-bg">
+        <button id="btn-invisible" onclick="document.getElementById('visor').activateAR()"></button>
     </div>
-
-    <model-viewer 
-        id="visor"
-        src="plato.glb" 
-        ios-src="plato.usdz" 
-        ar 
-        ar-modes="quick-look" 
-        quick-look-browsers="safari chrome">
-    </model-viewer>
-
-    <script>
-        // Función optimizada para activar AR Instantáneamente en iOS
-        function activarAR() {
-            const visor = document.getElementById('visor');
-            // Detectar si es iOS para forzar Quick Look directo
-            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-            
-            if (isIOS) {
-                // En iOS, model-viewer maneja el ios-src automáticamente al activar AR
-                visor.activateAR();
-            } else {
-                // Fallback para Android si fuera necesario, aunque el foco es iOS
-                visor.activateAR();
-            }
-        }
-        
-        // Asegurar que el visor esté cargado
-        document.addEventListener('DOMContentLoaded', () => {
-            const visor = document.getElementById('visor');
-            visor.addEventListener('load', () => {
-                console.log('Modelo 3D cargado y listo');
-            });
-        });
-    </script>
-
+    <model-viewer id="visor" src="plato.glb" ios-src="plato.usdz" ar ar-modes="quick-look scene-viewer"></model-viewer>
 </body>
 </html>
